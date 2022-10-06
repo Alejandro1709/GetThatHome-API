@@ -1,0 +1,23 @@
+_id: req_91d4ffb43472464097ca23a19f2385bd
+type: Request
+parentId: fld_0adad0a7179644ad96e91e5d3795f5df
+modified: 1665019863031
+created: 1665008586977
+url: "{{ _.BASE_URL }}/properties/3"
+name: Show
+description: ""
+method: GET
+body: {}
+parameters: []
+headers: []
+authentication:
+  type: bearer
+  token: eyJhY2Nlc3MtdG9rZW4iOiJVZEZ1dzdWNUdlRy1sYlpHQm5JZTJ3IiwidG9rZW4tdHlwZSI6IkJlYXJlciIsImNsaWVudCI6Ikplb3FxYVRNbU9pUkhLWm5naGh3ZnciLCJleHBpcnkiOiIxNjY2MjI5Mzc2IiwidWlkIjoidGVzdDFAbWFpbC5jb20ifQ==
+metaSortKey: -1665008586977
+isPrivate: false
+settingStoreCookies: true
+settingSendCookies: true
+settingDisableRenderRequestBody: false
+settingEncodeUrl: true
+settingRebuildPath: true
+settingFollowRedirects: global

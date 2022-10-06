@@ -1,0 +1,16 @@
+_id: env_7e9101255c3b792c3118aaa0277916423dfdece6
+type: Environment
+parentId: wrk_dd12c922fde448839cd94e8a7418c1e0
+modified: 1665008355127
+created: 1665008166925
+name: Base Environment
+data:
+  BASE_URL: http://127.0.0.1:8000
+  token: Q7d3gLxTQGWSx3KxmEYMvTdZ
+dataPropertyOrder:
+  "&":
+    - BASE_URL
+    - token
+color: null
+isPrivate: false
+metaSortKey: 1665008166925

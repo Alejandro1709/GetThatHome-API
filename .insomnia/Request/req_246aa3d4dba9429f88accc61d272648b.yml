@@ -1,0 +1,21 @@
+_id: req_246aa3d4dba9429f88accc61d272648b
+type: Request
+parentId: fld_0adad0a7179644ad96e91e5d3795f5df
+modified: 1665008422940
+created: 1665008183780
+url: "{{ _.BASE_URL }}/properties"
+name: Index
+description: ""
+method: GET
+body: {}
+parameters: []
+headers: []
+authentication: {}
+metaSortKey: -1665008183780
+isPrivate: false
+settingStoreCookies: true
+settingSendCookies: true
+settingDisableRenderRequestBody: false
+settingEncodeUrl: true
+settingRebuildPath: true
+settingFollowRedirects: global
