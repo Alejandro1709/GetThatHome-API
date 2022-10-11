@@ -10,7 +10,8 @@ class PropertiesController < ApplicationController
 
   def create
     return render status: :unauthorized unless current_user.role_name == "Landlord"
-    address = Address.create(modify_params(params[:address],["name"]))
+    address = Address.new(modify_params(params[:address],["name"]))
+    return render json: {address: ["Incorrect data"]}, status: :unprocessable_entity unless address.save
     photos = params[:photo_urls]
     op_type = params[:operation_type]
     other_data_keys = ["bedrooms", "bathrooms", "area", "description", "active", "property_type_id"]
@@ -18,8 +19,12 @@ class PropertiesController < ApplicationController
     body = other_data.merge!({ photo_urls: photos, address: address })
 
     @property = Property.new(body)
-    if @property.save && change_operation_type(op_type)
-      render json: @property
+    if @property.save  
+      unless change_operation_type(op_type)
+        @property.destroy
+        return render json: {operation_type: ["Incorrect data"]}, status: :unprocessable_entity 
+      end
+        render json: @property
     else
       render json: @property.errors, status: :unprocessable_entity
     end
@@ -45,10 +50,10 @@ class PropertiesController < ApplicationController
      is_same_op_type = @property.operation_type[:type] == op_type[:type]
      change_op_type = is_same_op_type ? change_operation_data(op_type) : change_operation_type(op_type)
     else
-      puts"********hola****"
       change_op_type = true
     end
-    if @property.update(body) && change_op_type
+    return render json: {operation_type: ["Incorrect data"]} unless change_op_type
+    if @property.update(body)
       render json: @property
     else
       render json: @property.errors, status: :unprocessable_entity
@@ -100,12 +105,15 @@ class PropertiesController < ApplicationController
     when "for sale"
       model = PropertyForSale
       other_model = PropertyForRent
+    else
+      return false
     end
    
-    attrs = model.attribute_names
-    modified_data.keys.all?{|k| attrs.include?(k)}
-    return false unless modified_data.keys.all?{|k| attrs.include?(k)}
-    new_prop = model.create(modified_data)
+    p attrs = model&.attribute_names
+    p modified_data
+    return false unless modified_data.keys.all?{|k| attrs&.include?(k)}
+    p new_prop = model.new(modified_data)
+    new_prop.save
     other_model.destroy_by(property: @property) if new_prop.persisted?
     Own.create(user: current_user, ownable: new_prop) if new_prop.persisted?
     new_prop.persisted?
@@ -119,9 +127,11 @@ class PropertiesController < ApplicationController
       model = PropertyForRent
     when "for sale"
       model = PropertyForSale
+    else
+      return false
     end
-    prop = model.find_by(property: @property)
-    attrs = model.attribute_names
+    prop = model&.find_by(property: @property)
+    attrs = model&.attribute_names || []
     return false unless modified_data.keys.all?{|k| attrs.include?(k)}
     prop.update(modified_data) 
   end
