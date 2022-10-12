@@ -4,7 +4,7 @@ class PropertiesController < ApplicationController
   before_action :set_property, only: %i[show update destroy]
   before_action :authenticate_user!, only: %i[create update destroy]
   def index
-    @properties = Property.all # array
+    @properties = Property.where(active: true) # array
     render json: @properties
   end
 
@@ -22,6 +22,7 @@ class PropertiesController < ApplicationController
     if @property.save  
       unless change_operation_type(op_type)
         @property.destroy
+        address.destroy
         return render json: {operation_type: ["Incorrect data"]}, status: :unprocessable_entity 
       end
         render json: @property
