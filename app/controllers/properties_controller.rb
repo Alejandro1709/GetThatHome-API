@@ -110,10 +110,10 @@ class PropertiesController < ApplicationController
       return false
     end
    
-    p attrs = model&.attribute_names
-    p modified_data
+    attrs = model&.attribute_names
+    modified_data
     return false unless modified_data.keys.all?{|k| attrs&.include?(k)}
-    p new_prop = model.new(modified_data)
+    new_prop = model.new(modified_data)
     new_prop.save
     other_model.destroy_by(property: @property) if new_prop.persisted?
     Own.create(user: current_user, ownable: new_prop) if new_prop.persisted?
